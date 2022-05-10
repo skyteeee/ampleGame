@@ -48,7 +48,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemy (Vector2 position)
     {
-        GameObject enemy = Instantiate(enemyPrefab, position, transform.rotation);
+        GameObject enemy = Instantiate(enemyPrefab, new Vector2(transform.position.x, transform.position.y) + position, transform.rotation);
         enemy.GetComponent<Enemy>().enemySpawner = gameObject;
         enemy.GetComponent<Enemy>().player = player;
         //enemy.GetComponent<Enemy>().BounceOff(new Vector2(rnd.Next(-1, 1), 0f));

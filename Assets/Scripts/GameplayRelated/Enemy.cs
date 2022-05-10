@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour
     private int jumpTime = 0;
     public GameObject player;
     public GameObject enemySpawner;
+    public GameObject deathEffect;
+    public GameObject dmgEffect;
     private bool isJumping = false;
     void Start()
     {
@@ -61,6 +63,7 @@ public class Enemy : MonoBehaviour
     {
         health -= dmg;
 
+        Instantiate(dmgEffect, transform.position, transform.rotation);
         BounceOff(hitPosition);
 
         if (health <= 0)
@@ -80,8 +83,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
+        Instantiate(deathEffect, transform.position, transform.rotation);
         enemySpawner.GetComponent<EnemySpawner>().allEnemies.Remove(gameObject);
         Destroy(gameObject);
     }

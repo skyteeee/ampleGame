@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     public float airJumpFactor = 30f;
     public int maxAirJumpAmount = 1;
     private int currentAirJumpAmount = 1;
+    private TpBomb tpBomb;
+    public GameObject tpBombPrefab;
 
 
     // Start is called before the first frame update
@@ -36,6 +38,16 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             airJump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            TpToBomb();
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ThrowTpBomb();
         }
 
         
@@ -58,7 +70,25 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    
+    private void ThrowTpBomb()
+    {
+        if (tpBomb != null)
+        {
+            tpBomb.Die();
+        }
+
+        GameObject bomb = Instantiate(tpBombPrefab, transform.position, transform.rotation);
+        tpBomb = bomb.GetComponent<TpBomb>();
+        tpBomb.Launch();
+    }
+
+    private void TpToBomb ()
+    {
+        if (tpBomb != null)
+        {
+            tpBomb.Pull(gameObject, 2);
+        }
+    }    
 
     private void airJump ()
     {
