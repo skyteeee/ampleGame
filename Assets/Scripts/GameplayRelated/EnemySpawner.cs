@@ -15,6 +15,7 @@ public class EnemySpawner : MonoBehaviour
     public int maxX = 10;
     public int minY = 10;
     public int maxY = 10;
+    public bool isEnabled = true;
     private Random rnd = new Random();
     private int currentInterval;
     private int spawnTime = 0;
@@ -38,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void CheckAndSpawn ()
     {
-        if (spawnTime % currentInterval == 0)
+        if (spawnTime % currentInterval == 0 && isEnabled)
         {
             SpawnEnemy(new Vector2 (rnd.Next(minX, maxX), rnd.Next(minY, maxY)));
             spawnTime = 0;
