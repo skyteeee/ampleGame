@@ -11,11 +11,14 @@ public class PlayerRocket : MonoBehaviour
     public int rocketInterval = 2000;
     private int time = 0;
     private bool shotAllowed = true;
+    public bool isEnabled = true;
 
     private void Start()
     {
-        rocketInterval = rocketInterval * 50 / 1000;
-        timeBar.SetMaxHealth(rocketInterval);
+        if (isEnabled) {
+            rocketInterval = rocketInterval * 50 / 1000;
+            timeBar.SetMaxHealth(rocketInterval);
+        }
     }
 
     void Update()
@@ -28,7 +31,7 @@ public class PlayerRocket : MonoBehaviour
 
     private void createRocket()
     {
-        if (shotAllowed)
+        if (shotAllowed && isEnabled)
         {
             Rocket rocket = Instantiate(rocketPrefab, transform.position, rocketPrefab.transform.rotation).GetComponent<Rocket>();
             rocket.enemyManager = enemySpawner;
@@ -38,16 +41,18 @@ public class PlayerRocket : MonoBehaviour
         }
     }
 
-    public void RestoreShot ()
+    public void RestoreShot()
     {
-        time = rocketInterval;
-        timeBar.SetHealth(time);
-        shotAllowed = true;
+        if (isEnabled) {
+            time = rocketInterval;
+            timeBar.SetHealth(time);
+            shotAllowed = true;
+        }
     }
 
     private void FixedUpdate()
     {
-        if (!shotAllowed)
+        if (!shotAllowed && isEnabled)
         { 
             time++;
             timeBar.SetHealth(time);

@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     public int health = 100;
     public HealthBar healthBar;
+    public bool healthBarStatus = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +18,10 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        healthBar.SetHealth(health);
+        if (healthBarStatus)
+        {
+            healthBar.SetHealth(health);
+        }
         if (health < 0)
         {
             PlayerGameOver();
@@ -26,7 +30,7 @@ public class Player : MonoBehaviour
 
     void PlayerGameOver ()
     {
-        SceneManager.LoadScene("level2");
+        SceneManager.LoadScene("SampleScene");
     }
 
     // Update is called once per frame

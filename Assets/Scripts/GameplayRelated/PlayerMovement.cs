@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public float teleportMagnitude = 2f;
     public float airJumpFactor = 30f;
     public int maxAirJumpAmount = 1;
+    public bool allowTpBomb = true;
     private int currentAirJumpAmount = 1;
     private TpBomb tpBomb;
     public GameObject tpBombPrefab;
@@ -34,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalMovement = Input.GetAxisRaw("Horizontal");
         verticalMovement = Input.GetAxisRaw("Vertical");
+
+        
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -58,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (verticalMovement > 0f && !isJumping)
         {
+            rb2D.velocity = new Vector2(rb2D.velocity.x, 0f);
             rb2D.AddForce(new Vector2(0f, verticalMovement * jumpForce), ForceMode2D.Impulse);
             isJumping = true;
         }
@@ -72,14 +76,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void ThrowTpBomb()
     {
-        if (tpBomb != null)
+        if (allowTpBomb)
         {
-            tpBomb.Die();
-        }
+            if (tpBomb != null)
+            {
+                tpBomb.Die();
+            }
 
-        GameObject bomb = Instantiate(tpBombPrefab, transform.position, transform.rotation);
-        tpBomb = bomb.GetComponent<TpBomb>();
-        tpBomb.Launch();
+            GameObject bomb = Instantiate(tpBombPrefab, transform.position, transform.rotation);
+            tpBomb = bomb.GetComponent<TpBomb>();
+            tpBomb.Launch();
+        }
     }
 
     private void TpToBomb ()

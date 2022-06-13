@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 5329240266273217558}
   - component: {fileID: 5329240266273217559}
   - component: {fileID: 5329240266273217556}
-  - component: {fileID: 5329240266273217557}
+  - component: {fileID: 1333469277811926923}
   - component: {fileID: 5329240266273217578}
   - component: {fileID: 5329240266273217579}
   - component: {fileID: 5329240266273217577}
@@ -148,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 5329240266273217552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 1, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5329240265604780560}
@@ -198,7 +198,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.2767845, g: 0.8679245, b: 0.10234957, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -230,7 +230,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &5329240266273217557
+--- !u!70 &1333469277811926923
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,7 +244,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 2}
   m_Direction: 0
 --- !u!61 &5329240266273217578
 BoxCollider2D:
@@ -259,18 +259,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.52294046}
+  m_Offset: {x: 0, y: -1.03}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1, y: 2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.052336603}
+  m_Size: {x: 0.78, y: 0.052336603}
   m_EdgeRadius: 0
 --- !u!114 &5329240266273217579
 MonoBehaviour:
@@ -288,7 +288,8 @@ MonoBehaviour:
   movementSpeed: 1000
   teleportMagnitude: 3
   airJumpFactor: 50
-  maxAirJumpAmount: 2
+  maxAirJumpAmount: 0
+  allowTpBomb: 0
   tpBombPrefab: {fileID: 4730641422969068528, guid: ed5b98df39663ec4e8594d8f7142cf6a, type: 3}
 --- !u!114 &5329240266273217577
 MonoBehaviour:
@@ -318,6 +319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   healthBar: {fileID: 0}
+  healthBarStatus: 0
 --- !u!114 &5329240266273217583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,6 +337,7 @@ MonoBehaviour:
   timeBar: {fileID: 0}
   spitForce: 10
   rocketInterval: 5000
+  isEnabled: 0
 --- !u!1 &5329240266548723301
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,4 +390,5 @@ MonoBehaviour:
   maxX: 20
   minY: 20
   maxY: 20
+  isEnabled: 0
   allEnemies: []
