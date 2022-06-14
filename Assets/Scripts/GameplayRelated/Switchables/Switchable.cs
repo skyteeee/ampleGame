@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class Switchable : MonoBehaviour
 {
+
+    public bool isOn;
     abstract public void TurnOn();
     abstract public void TurnOff();
 }

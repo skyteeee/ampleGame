@@ -11,6 +11,7 @@ public class Door : Switchable
     private Vector3 startPos;
     public float openLimit = 0;
     public float openDirection = -1;
+    public bool openOnce = false;
     void Start()
     {
         startPos = transform.position;
@@ -20,13 +21,19 @@ public class Door : Switchable
     public void Open ()
     {
         isMoving = true;
+        isOn = true;
         openSpeed = Mathf.Abs(openSpeed);
     }
 
     public void Close()
     {
-        isMoving = true;
-        openSpeed = -Mathf.Abs(openSpeed);
+        if (!openOnce)
+        {
+            isMoving = true;
+            openSpeed = -Mathf.Abs(openSpeed);
+            isOn = false;
+        }
+        
     }
 
     private void FixedUpdate()

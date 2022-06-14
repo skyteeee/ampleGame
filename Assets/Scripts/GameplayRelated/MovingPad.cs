@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPad : MonoBehaviour
+public class MovingPad : Switchable
 {
 
     public float speed = 1;
@@ -11,6 +11,18 @@ public class MovingPad : MonoBehaviour
     public Rigidbody2D rb;
     private int direction = 1;
     private float distance12;
+
+
+    public override void TurnOff()
+    {
+        
+    }
+
+    public override void TurnOn()
+    {
+        
+    }
+    
 
     private void Start()
     {
