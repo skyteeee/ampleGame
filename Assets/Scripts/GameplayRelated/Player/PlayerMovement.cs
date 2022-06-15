@@ -21,12 +21,17 @@ public class PlayerMovement : MonoBehaviour
     private int currentAirJumpAmount = 1;
     private TpBomb tpBomb;
     public GameObject tpBombPrefab;
+    private float targetGravity;
+    public float gravitySwitchSpeed = 0.1f;
+    private bool isUpsideDown = false;
+    private bool isGravityFlipAllowed = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
+        targetGravity = rb2D.gravityScale;
         isJumping = false;
     }
 
@@ -53,25 +58,66 @@ public class PlayerMovement : MonoBehaviour
             ThrowTpBomb();
         }
 
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q))
+        {
+            FlipGravity();
+        }
+        
+    }
+
+    public void AllowGravityFlip()
+    {
+        isGravityFlipAllowed = true;
+    }
+
+    public void RestrictGravityFlip()
+    {
+        isGravityFlipAllowed = false;
+    }
+
+    public void FlipGravity()
+    {
+        if (isGravityFlipAllowed)
+        {
+            transform.Rotate(new Vector3(0, 180, 180));
+            targetGravity *= -1;
+            isUpsideDown = isUpsideDown ? false : true;
+            RestrictGravityFlip();
+        }
+    }
+
+    public void ForceFlipGravity()
+    {
+        
+        transform.Rotate(new Vector3(0, 180, 180));
+        targetGravity *= -1;
+        isUpsideDown = isUpsideDown ? false : true;
         
     }
 
     void FixedUpdate()
     {
         
+
+        //move
         if (verticalMovement > 0f && !isJumping)
         {
             rb2D.velocity = new Vector2(rb2D.velocity.x, 0f);
-            rb2D.AddForce(new Vector2(0f, verticalMovement * jumpForce), ForceMode2D.Impulse);
+            rb2D.AddForce(new Vector2(0f, verticalMovement * jumpForce * (isUpsideDown ? -1 : 1)), ForceMode2D.Impulse);
             isJumping = true;
         }
 
+
+        //jump
         if (horizontalMovement > 0.1f || horizontalMovement < -0.1f)
         {
             rb2D.AddForce(new Vector2(horizontalMovement * movementSpeed, 0f), ForceMode2D.Force);
             Flip(horizontalMovement);
         }
 
+
+        //gravity
+        rb2D.gravityScale = Mathf.Lerp(rb2D.gravityScale, targetGravity, gravitySwitchSpeed);
     }
 
     private void ThrowTpBomb()
@@ -102,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
         if (currentAirJumpAmount > 0 && isJumping)
         {
             rb2D.velocity = new Vector2(rb2D.velocity.x, 0f);
-            rb2D.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            rb2D.AddForce(new Vector2(0, jumpForce * (isUpsideDown ? -1 : 1)), ForceMode2D.Impulse);
             currentAirJumpAmount--;
         }
     }

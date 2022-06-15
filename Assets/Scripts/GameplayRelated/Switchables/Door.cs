@@ -14,7 +14,7 @@ public class Door : Switchable
     public bool openOnce = false;
     void Start()
     {
-        startPos = transform.position;
+        startPos = transform.localPosition;
         startScale = transform.localScale;
     }
 
@@ -49,7 +49,7 @@ public class Door : Switchable
             }
 
             transform.localScale = new Vector3(startScale.x, startScale.y * progress/100, startScale.z);
-            transform.position = new Vector3(startPos.x, startPos.y + (startScale.y - transform.localScale.y) / 2 * openDirection, startPos.z);
+            transform.localPosition = new Vector3(startPos.x, startPos.y + (startScale.y - transform.localScale.y) / 2 * openDirection, startPos.z);
 
         }
     }
