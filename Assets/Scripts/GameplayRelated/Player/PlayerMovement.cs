@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     public float gravitySwitchSpeed = 0.1f;
     private bool isUpsideDown = false;
     private bool isGravityFlipAllowed = false;
+    public Utils utils;
+    private bool allowGlobalGravityFlip = false;
 
 
     // Start is called before the first frame update
@@ -65,6 +67,32 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    public void GlobalFlip(GravityDirection gravityDirection, float smoothness = 0.01f)
+    {
+        Vector2 gravity = Vector2.down;
+
+        switch (gravityDirection)
+        {
+            case GravityDirection.down:
+                gravity = Vector2.down * 9.81f;
+                break;
+
+            case GravityDirection.up:
+                gravity = Vector2.up * 9.81f;
+                break;
+
+            case GravityDirection.left:
+                gravity = Vector2.left * 9.81f;
+                break;
+
+            case GravityDirection.right:
+                gravity = Vector2.right * 9.81f;
+                break;
+        }
+        RotateToDirection(gravityDirection);
+        utils.SwitchGravity(gravity, smoothness);
+    }
+
     public void AllowGravityFlip()
     {
         isGravityFlipAllowed = true;
@@ -73,6 +101,34 @@ public class PlayerMovement : MonoBehaviour
     public void RestrictGravityFlip()
     {
         isGravityFlipAllowed = false;
+    }
+
+    private void RotateToDirection(GravityDirection direction)
+    {
+        Vector3 angles = Vector3.zero;
+
+        switch (direction)
+        {
+            case GravityDirection.down:
+                angles = new Vector3(0, 180, 180);
+                isUpsideDown = false;
+                break;
+            case GravityDirection.up:
+                angles = new Vector3(0, 180, 180);
+                isUpsideDown = true;
+                break;
+
+            case GravityDirection.left:
+                angles = new Vector3(0, 0, -90);
+                isUpsideDown = false;
+                break;
+
+            case GravityDirection.right:
+                isUpsideDown = true;
+                angles = new Vector3(180, 0, 90);
+                break;
+        }
+        transform.Rotate(angles);
     }
 
     public void FlipGravity()
@@ -86,11 +142,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void ForceFlipGravity()
+    public void ForceFlipGravity(bool useMultiplier = true)
     {
         
         transform.Rotate(new Vector3(0, 180, 180));
-        targetGravity *= -1;
+        targetGravity *= useMultiplier ? -1 : 1;
         isUpsideDown = isUpsideDown ? false : true;
         
     }

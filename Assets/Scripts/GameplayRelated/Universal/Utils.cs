@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class Utils : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private Vector2 desiredGravity = Vector2.down * 9.81f;
+    private float gravitySwitchSmoothness = 1;
+
+    private void FixedUpdate()
     {
-        
+        CorrectGravity();
     }
 
     public static float GetPointing(Vector2 from, Vector2 to)
@@ -41,4 +38,57 @@ public class Utils : MonoBehaviour
         Vector2 normal = new Vector2(vector.x / z, vector.y / z);
         return normal;
     }
+
+    public void SwitchGravity(Vector2 gravity, float smoothness)
+    {
+        desiredGravity = gravity;
+        gravitySwitchSmoothness = smoothness;
+    }
+
+    private void CorrectGravity()
+    {
+
+        if (Mathf.Abs(desiredGravity.y - Physics2D.gravity.y) > 0.01 ||
+            Mathf.Abs(desiredGravity.x - Physics2D.gravity.x) > 0.01) {
+            Physics2D.gravity = new Vector2(
+                Mathf.Lerp(Physics2D.gravity.x, desiredGravity.x, gravitySwitchSmoothness),
+                Mathf.Lerp(Physics2D.gravity.y, desiredGravity.y, gravitySwitchSmoothness));
+        }
+    }
+
+
+}
+
+public enum GravityDirection
+{
+    left, right, up, down
+}
+
+
+public delegate void Runnable(); 
+
+public class TimeoutCall
+{
+    private float timeoutDuration;
+    private Runnable callback;
+    private bool isComplete = false;
+
+    public TimeoutCall(float duration, Runnable callback)
+    {
+        this.callback = callback;
+        timeoutDuration = duration;
+    }
+
+    public void FixedUpdate()
+    {
+        if (!isComplete) {
+            timeoutDuration -= 1 / 50f;
+            if (timeoutDuration <= 0f)
+            {
+                callback();
+                isComplete = true;
+            }
+        }
+    }
+
 }
